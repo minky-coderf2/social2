@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문화 탐구 보드</title>
+<style>
+:root {
+  --bg:#ffffff; --bg2:#f7f7f5;
+  --border:rgba(0,0,0,.10); --border2:rgba(0,0,0,.16);
+  --text:#1a1a18; --text2:#5a5a56; --text3:#9a9a94;
+  --radius:14px; --radius-sm:8px; --radius-pill:20px;
+  --blue50:#E6F1FB; --blue200:#85B7EB; --blue400:#378ADD; --blue800:#0C447C;
+  --teal50:#E1F5EE; --teal200:#5DCAA5; --teal400:#1D9E75; --teal800:#085041;
+  --purple50:#EEEDFE; --purple200:#AFA9EC; --purple400:#7F77DD; --purple800:#3C3489;
+  --coral50:#FAECE7; --coral200:#F0997B; --coral400:#D85A30; --coral800:#712B13;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg2); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1rem; }
+
+.card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem; max-width: 420px; width: 100%; text-align: center; }
+.icon { font-size: 36px; margin-bottom: 1rem; }
+.title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: .4rem; }
+.subtitle { font-size: 13px; color: var(--text3); margin-bottom: 2rem; line-height: 1.6; }
+
+.cls-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.cls-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 20px 12px; border-radius: var(--radius); border: 0.5px solid var(--border2); background: var(--bg); text-decoration: none; transition: all .15s; cursor: pointer; }
+.cls-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+.cls-btn.c0 { border-color: var(--blue200); background: var(--blue50); }
+.cls-btn.c0:hover { border-color: var(--blue400); }
+.cls-btn.c1 { border-color: var(--teal200); background: var(--teal50); }
+.cls-btn.c1:hover { border-color: var(--teal400); }
+.cls-btn.c2 { border-color: var(--purple200); background: var(--purple50); }
+.cls-btn.c2:hover { border-color: var(--purple400); }
+.cls-btn.c3 { border-color: var(--coral200); background: var(--coral50); }
+.cls-btn.c3:hover { border-color: var(--coral400); }
+.cls-num { font-size: 28px; font-weight: 700; }
+.c0 .cls-num { color: var(--blue800); }
+.c1 .cls-num { color: var(--teal800); }
+.c2 .cls-num { color: var(--purple800); }
+.c3 .cls-num { color: var(--coral800); }
+.cls-label { font-size: 12px; font-weight: 500; }
+.c0 .cls-label { color: var(--blue800); }
+.c1 .cls-label { color: var(--teal800); }
+.c2 .cls-label { color: var(--purple800); }
+.c3 .cls-label { color: var(--coral800); }
+
+.footer { margin-top: 1.5rem; font-size: 11px; color: var(--text3); text-align: center; line-height: 1.7; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🌏</div>
+  <div class="title">문화 탐구 보드</div>
+  <div class="subtitle">우리 반을 선택해서 시작하세요</div>
+  <div class="cls-grid">
+    <a class="cls-btn c0" href="class1.html">
+      <span class="cls-num">1반</span>
+      <span class="cls-label">입장하기</span>
+    </a>
+    <a class="cls-btn c1" href="class2.html">
+      <span class="cls-num">2반</span>
+      <span class="cls-label">입장하기</span>
+    </a>
+    <a class="cls-btn c2" href="class3.html">
+      <span class="cls-num">3반</span>
+      <span class="cls-label">입장하기</span>
+    </a>
+    <a class="cls-btn c3" href="class4.html">
+      <span class="cls-num">4반</span>
+      <span class="cls-label">입장하기</span>
+    </a>
+  </div>
+</div>
+<div class="footer">사회 1학년 · 다양한 문화의 이해 · 문화의 보편성과 특수성</div>
+</body>
+</html>

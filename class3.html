@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문화 탐구 보드 — 3반</title>
+<style>
+:root {
+  --bg:#ffffff; --bg2:#f7f7f5;
+  --border:rgba(0,0,0,.10); --border2:rgba(0,0,0,.18);
+  --text:#1a1a18; --text2:#5a5a56; --text3:#9a9a94;
+  --radius:12px; --radius-sm:8px; --radius-pill:20px;
+  --blue50:#E6F1FB; --blue200:#85B7EB; --blue400:#378ADD; --blue600:#185FA5; --blue800:#0C447C;
+  --teal50:#E1F5EE; --teal200:#5DCAA5; --teal400:#1D9E75; --teal600:#0F6E56; --teal800:#085041;
+  --purple50:#EEEDFE; --purple200:#AFA9EC; --purple400:#7F77DD; --purple600:#534AB7; --purple800:#3C3489;
+  --coral50:#FAECE7; --coral200:#F0997B; --coral400:#D85A30; --coral600:#993C1D; --coral800:#712B13;
+  --amber50:#FAEEDA; --amber400:#BA7517; --amber600:#854F0B; --amber800:#633806;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg2);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;}
+
+/* 헤더 */
+.hd{background:var(--bg);border-bottom:0.5px solid var(--border);padding:0 1.25rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;}
+.hd-left{display:flex;align-items:center;gap:8px;}
+.back-btn{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text3);text-decoration:none;padding:4px 8px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--bg);transition:all .15s;}
+.back-btn:hover{background:var(--bg2);}
+.hd-title{font-size:14px;font-weight:500;color:var(--text);}
+.cls-pill{padding:3px 12px;border-radius:var(--radius-pill);font-size:12px;font-weight:500;background:var(--blue50);color:var(--blue800);border:0.5px solid var(--blue200);}
+.tab-row{display:flex;}
+.tab{padding:0 16px;height:52px;font-size:13px;font-weight:500;cursor:pointer;color:var(--text3);border:none;background:none;border-bottom:2px solid transparent;font-family:inherit;transition:color .15s,border-color .15s;}
+.tab:hover{color:var(--text2);}
+.tab.on{color:var(--blue400);border-bottom-color:var(--blue400);}
+
+.wrap{max-width:720px;margin:0 auto;padding:1.5rem 1rem 3rem;}
+
+/* 타이머 */
+.timer{display:flex;align-items:center;gap:12px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-bottom:1.25rem;}
+.t-disp{font-size:20px;font-weight:500;color:var(--text);min-width:52px;font-variant-numeric:tabular-nums;}
+.t-bg{flex:1;height:5px;border-radius:3px;background:var(--border);overflow:hidden;}
+.t-bar{height:100%;border-radius:3px;background:var(--teal400);transition:width .5s linear,background .4s;}
+.t-btn{padding:6px 14px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:var(--bg);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--text2);white-space:nowrap;}
+.t-btn:hover{background:var(--bg2);}
+
+/* 섹션 */
+.sec-lbl{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem;}
+.divider{height:0.5px;background:var(--border);margin:1.25rem 0;}
+
+/* 모둠 */
+.g-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.5rem;}
+.g-btn{padding:10px 4px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit;color:var(--text2);transition:all .15s;}
+.g-btn:hover{background:var(--bg2);border-color:var(--border2);}
+.g-btn.g0{border:1.5px solid var(--blue400);background:var(--blue50);color:var(--blue800);}
+.g-btn.g1{border:1.5px solid var(--teal400);background:var(--teal50);color:var(--teal800);}
+.g-btn.g2{border:1.5px solid var(--purple400);background:var(--purple50);color:var(--purple800);}
+.g-btn.g3{border:1.5px solid var(--coral400);background:var(--coral50);color:var(--coral800);}
+
+/* 주제 */
+.th-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.5rem;}
+.th-btn{padding:14px 10px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--bg);font-size:13px;font-weight:500;cursor:pointer;text-align:left;font-family:inherit;color:var(--text);transition:all .15s;}
+.th-btn:hover{border-color:var(--border2);background:var(--bg2);}
+.th-btn.on{border:1.5px solid var(--blue400);background:var(--blue50);color:var(--blue800);}
+.th-sub{font-size:11px;color:var(--text3);margin-top:3px;font-weight:400;}
+.th-btn.on .th-sub{color:var(--blue600);}
+
+/* 입력 */
+.field{margin-bottom:1rem;}
+.f-lbl{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:.4rem;display:flex;align-items:center;gap:6px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:var(--radius-pill);font-size:11px;font-weight:500;}
+.b-u{background:var(--teal50);color:var(--teal800);}
+.b-s{background:var(--purple50);color:var(--purple800);}
+.b-r{background:var(--amber50);color:var(--amber800);}
+input.ipt,textarea.ipt{width:100%;padding:8px 12px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:var(--bg);font-family:inherit;font-size:13px;color:var(--text);outline:none;transition:border-color .15s;}
+input.ipt:focus,textarea.ipt:focus{border-color:var(--blue400);}
+input.ipt::placeholder,textarea.ipt::placeholder{color:var(--text3);}
+textarea.ipt{resize:none;line-height:1.6;}
+.c-row{display:flex;gap:8px;margin-bottom:6px;}
+.c-name{width:88px;flex-shrink:0;}
+.c-det{flex:1;}
+.add-btn{padding:6px 12px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:transparent;font-size:12px;cursor:pointer;color:var(--text3);font-family:inherit;transition:all .15s;}
+.add-btn:hover{border-color:var(--blue400);color:var(--blue600);}
+
+/* 공유 버튼 */
+.sub-btn{width:100%;padding:11px;border-radius:var(--radius-sm);border:1.5px solid var(--blue400);background:var(--blue50);color:var(--blue800);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;}
+.sub-btn:hover{background:var(--blue200);}
+.notice{font-size:12px;padding:5px 0;display:none;}
+.ok{color:var(--teal600);display:block;}
+.err{color:var(--coral600);display:block;}
+
+/* 보드 */
+.bd-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.bd-count{font-size:13px;color:var(--text2);}
+.rf-btn{padding:6px 12px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:var(--bg);font-size:12px;cursor:pointer;color:var(--text2);font-family:inherit;}
+.rf-btn:hover{background:var(--bg2);}
+.bd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1.25rem;}
+.bc{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;}
+.bc.empty{background:var(--bg2);display:flex;align-items:center;justify-content:center;min-height:130px;}
+.bc-empty{text-align:center;color:var(--text3);font-size:13px;line-height:1.7;}
+.bc-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.bc-gb{padding:2px 10px;border-radius:var(--radius-pill);font-size:11px;font-weight:500;}
+.bc-gb.bg0{background:var(--blue50);color:var(--blue800);}
+.bc-gb.bg1{background:var(--teal50);color:var(--teal800);}
+.bc-gb.bg2{background:var(--purple50);color:var(--purple800);}
+.bc-gb.bg3{background:var(--coral50);color:var(--coral800);}
+.bc-theme{font-size:14px;font-weight:500;color:var(--text);}
+.bc-sec{margin-bottom:7px;}
+.bc-sec:last-child{margin-bottom:0;}
+.bc-sl{display:inline-block;padding:2px 8px;border-radius:var(--radius-pill);font-size:11px;font-weight:500;margin-bottom:3px;}
+.bc-txt{font-size:12px;color:var(--text2);line-height:1.6;}
+.bc-sr{display:flex;gap:6px;font-size:12px;color:var(--text2);margin-bottom:2px;line-height:1.5;}
+.bc-sc{font-weight:500;color:var(--text);flex-shrink:0;}
+
+/* 토의 */
+.discuss{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;}
+.dq{font-size:13px;font-weight:500;color:var(--text);margin-bottom:.3rem;}
+.dh{font-size:12px;color:var(--text2);line-height:1.7;}
+
+@media(max-width:560px){
+  .bd-grid,.th-grid{grid-template-columns:1fr;}
+  .g-row{grid-template-columns:repeat(2,1fr);}
+  .tab{padding:0 12px;font-size:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="hd-left">
+    <a class="back-btn" href="index.html">← 반 선택</a>
+    <span class="hd-title">문화 탐구 보드</span>
+    <span class="cls-pill">3반</span>
+  </div>
+  <div class="tab-row">
+    <button class="tab on" onclick="showTab('write')">입력하기</button>
+    <button class="tab" onclick="showTab('board')">모둠 보드</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 입력 패널 -->
+  <div id="writePanel">
+
+    <div class="timer">
+      <div class="t-disp" id="tD">10:00</div>
+      <div class="t-bg"><div class="t-bar" id="tB" style="width:100%;"></div></div>
+      <button class="t-btn" id="tBtn" onclick="toggleTimer()">시작</button>
+    </div>
+
+    <div class="sec-lbl">우리 모둠</div>
+    <div class="g-row">
+      <button class="g-btn" onclick="selG(0)">1모둠</button>
+      <button class="g-btn" onclick="selG(1)">2모둠</button>
+      <button class="g-btn" onclick="selG(2)">3모둠</button>
+      <button class="g-btn" onclick="selG(3)">4모둠</button>
+    </div>
+
+    <div class="sec-lbl">탐구 주제</div>
+    <div class="th-grid">
+      <button class="th-btn" onclick="selT(0)">인사 방식<div class="th-sub">악수·절·볼 맞대기 등</div></button>
+      <button class="th-btn" onclick="selT(1)">식사 도구<div class="th-sub">젓가락·포크·맨손 등</div></button>
+      <button class="th-btn" onclick="selT(2)">생일 기념<div class="th-sub">케이크·미역국·특별 음식</div></button>
+      <button class="th-btn" onclick="selT(3)">학교 점심<div class="th-sub">급식·도시락·카페테리아</div></button>
+      <button class="th-btn" onclick="selT(4)">새해 풍습<div class="th-sub">세배·불꽃놀이·전통 음식</div></button>
+      <button class="th-btn" onclick="selT(5)">가족 호칭<div class="th-sub">언니·오빠·성씨 부르기</div></button>
+    </div>
+
+    <div class="field">
+      <div class="f-lbl"><span class="badge b-s">나라별 특수성</span>나라마다 어떻게 다른가요? (모둠원별 1개국씩 조사할 것)</div>
+      <div id="cRows"></div>
+      <button class="add-btn" onclick="addC()">+ 나라 추가</button>
+    </div>
+
+    <div class="field">
+      <div class="f-lbl"><span class="badge b-u">보편성</span>모든 나라의 공통점을 한 문장으로</div>
+      <textarea class="ipt" id="univIn" rows="2" placeholder="모든 나라의 공통점을 한 문장으로 써보세요."></textarea>
+    </div>
+
+    <div class="field">
+      <div class="f-lbl"><span class="badge b-r">차이의 이유</span>왜 나라마다 다를까요?</div>
+      <textarea class="ipt" id="rsIn" rows="2" placeholder="환경, 역사, 가치관 중 골라서 이유를 설명해보세요."></textarea>
+    </div>
+
+    <div class="divider"></div>
+    <div id="ntc" class="notice"></div>
+    <button class="sub-btn" onclick="submit()">모둠 보드에 공유하기</button>
+
+  </div>
+
+  <!-- 보드 패널 -->
+  <div id="boardPanel" style="display:none;">
+    <div class="bd-top">
+      <div class="bd-count" id="bdCnt">공유된 모둠 결과</div>
+      <button class="rf-btn" onclick="renderBoard()">새로고침</button>
+    </div>
+    <div class="bd-grid" id="bdGrid"></div>
+    <div class="discuss">
+      <div class="dq">전체 토의 — 4모둠 결과를 비교해보세요</div>
+      <div class="dh">주제가 달라도 "모든 나라에 공통점이 있고, 구체적 모습은 나라마다 다르다"는 패턴이 반복되나요?<br>이것이 바로 보편성과 특수성이 하나의 문화 안에 함께 존재한다는 의미예요.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CLS='3', SK='cult_3_v4';
+const THEMES=['인사 방식','식사 도구','생일 기념','학교 점심','새해 풍습','가족 호칭'];
+const GN=['1모둠','2모둠','3모둠','4모둠'];
+const GC=['g0','g1','g2','g3'], BG=['bg0','bg1','bg2','bg3'];
+
+let cg=-1, ct=-1, rows=[{c:'',d:''},{c:'',d:''}];
+let tOn=false,tSt=false,secs=600,tInt=null;
+
+function save(i,d){try{localStorage.setItem(SK+'_g'+i,JSON.stringify(d));return true;}catch(e){return false;}}
+function load(i){try{const r=localStorage.getItem(SK+'_g'+i);return r?JSON.parse(r):null;}catch(e){return null;}}
+function loadAll(){return[0,1,2,3].map(i=>load(i));}
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('on',(t==='write'&&i===0)||(t==='board'&&i===1)));
+  document.getElementById('writePanel').style.display=t==='write'?'':'none';
+  document.getElementById('boardPanel').style.display=t==='board'?'':'none';
+  if(t==='board')renderBoard();
+}
+
+function selG(i){
+  cg=i;
+  document.querySelectorAll('.g-btn').forEach((b,j)=>b.className='g-btn'+(j===i?' '+GC[i]:''));
+  const s=load(i);
+  if(s){
+    ct=s.theme; rows=s.countries&&s.countries.length?s.countries:[{c:'',d:''},{c:'',d:''}];
+    document.getElementById('univIn').value=s.univ||'';
+    document.getElementById('rsIn').value=s.reason||'';
+  } else {
+    ct=-1; rows=[{c:'',d:''},{c:'',d:''}];
+    document.getElementById('univIn').value='';
+    document.getElementById('rsIn').value='';
+  }
+  renderT(); renderRows();
+}
+
+function selT(i){ct=i;document.querySelectorAll('.th-btn').forEach((b,j)=>b.classList.toggle('on',j===i));}
+function renderT(){document.querySelectorAll('.th-btn').forEach((b,j)=>b.classList.toggle('on',j===ct));}
+
+function renderRows(){
+  document.getElementById('cRows').innerHTML=rows.map((r,i)=>`
+    <div class="c-row">
+      <input class="ipt c-name" placeholder="나라" value="${r.c}" oninput="rows[${i}].c=this.value">
+      <input class="ipt c-det" placeholder="이 나라만의 구체적인 모습" value="${r.d}" oninput="rows[${i}].d=this.value">
+    </div>`).join('');
+}
+function addC(){rows.push({c:'',d:''});renderRows();}
+
+function submit(){
+  if(cg<0){ntc('모둠을 먼저 선택해주세요.','err');return;}
+  if(ct<0){ntc('주제를 먼저 선택해주세요.','err');return;}
+  const d={group:cg,theme:ct,countries:rows.filter(r=>r.c||r.d),univ:document.getElementById('univIn').value,reason:document.getElementById('rsIn').value,ts:Date.now()};
+  if(save(cg,d)){
+    ntc('공유됐어요!','ok');
+    setTimeout(()=>{document.getElementById('ntc').className='notice';showTab('board');},700);
+  } else ntc('저장 중 오류가 발생했어요.','err');
+}
+function ntc(msg,type){const el=document.getElementById('ntc');el.textContent=msg;el.className='notice '+type;}
+
+function renderBoard(){
+  const all=loadAll();
+  const filled=all.filter(Boolean).length;
+  document.getElementById('bdCnt').textContent=`공유된 모둠 결과 ${filled}/4`;
+  document.getElementById('bdGrid').innerHTML=[0,1,2,3].map(i=>{
+    const d=all[i];
+    if(!d)return`<div class="bc empty"><div class="bc-empty">${GN[i]}<br>아직 공유 전이에요</div></div>`;
+    const sr=(d.countries||[]).map(c=>`<div class="bc-sr"><span class="bc-sc">${c.c||'?'}</span><span>${c.d||''}</span></div>`).join('');
+    return`<div class="bc">
+      <div class="bc-hd"><span class="bc-gb ${BG[i]}">${GN[i]}</span><span class="bc-theme">${THEMES[d.theme]||''}</span></div>
+      ${d.univ?`<div class="bc-sec"><span class="bc-sl b-u">보편성</span><div class="bc-txt">${d.univ}</div></div>`:''}
+      ${sr?`<div class="bc-sec"><span class="bc-sl b-s">나라별 특수성</span><div>${sr}</div></div>`:''}
+      ${d.reason?`<div class="bc-sec"><span class="bc-sl b-r">차이의 이유</span><div class="bc-txt">${d.reason}</div></div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function toggleTimer(){
+  if(secs<=0)return;
+  if(tOn){clearInterval(tInt);tOn=false;document.getElementById('tBtn').textContent=tSt?'재개':'시작';}
+  else{
+    tSt=true;tOn=true;document.getElementById('tBtn').textContent='일시정지';
+    tInt=setInterval(()=>{
+      if(secs<=0){clearInterval(tInt);tOn=false;document.getElementById('tBtn').textContent='종료';document.getElementById('tD').textContent='완료!';document.getElementById('tB').style.background='#D85A30';return;}
+      secs--;
+      const m=Math.floor(secs/60),s=secs%60;
+      document.getElementById('tD').textContent=m+':'+s.toString().padStart(2,'0');
+      document.getElementById('tB').style.width=(secs/600*100)+'%';
+      document.getElementById('tB').style.background=secs<=120?'#BA7517':'#1D9E75';
+    },1000);
+  }
+}
+
+renderRows();
+</script>
+</body>
+</html>
